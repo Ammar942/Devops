@@ -15,15 +15,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-
       - name: Install dependencies
         run: npm install
-
-      - uses: actions/upload-artifact@v4
-        with:
-            name: my-artifact
-            path: test-results.xml
 
       - name: Run unit tests
         id: nodejs-unite-testing
         run: npm test
+
+      - name: archieve
+        if: steps.nodejs-unite-testing.outcome == 'failure' || steps.nodejs-unite-testing.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+            name: my-artifact
+            path: test-results.xml
+
+      
